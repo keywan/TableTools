@@ -5,19 +5,33 @@
 		<link rel="shortcut icon" type="image/ico" href="http://www.sprymedia.co.uk/media/images/favicon.ico">
 		
 		<title>TableTools example</title>
-		<style type="text/css" title="currentStyle">
+
+		<style type="text/css">
 			@import "../../media/css/demo_page.css";
-			@import "../../media/css/demo_table.css";
-			@import "media/css/TableTools.css";
+			@import "http://twitter.github.com/bootstrap/assets/css/bootstrap.css";
+			@import "http://datatables.github.com/Plugins/integration/bootstrap/dataTables.bootstrap.css";
 		</style>
+
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" charset="utf-8" src="media/js/ZeroClipboard.js"></script>
 		<script type="text/javascript" charset="utf-8" src="media/js/TableTools.js"></script>
+		<script type="text/javascript" charset="utf-8" src="http://datatables.github.com/Plugins/integration/bootstrap/dataTables.bootstrap.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				$('#example').dataTable( {
-					"sDom": 'T<"clear">lfrtip'
+					"sDom": "<'row-fluid'<'span6'T><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+					"oTableTools": {
+						"aButtons": [
+							"copy",
+							"print",
+							{
+								"sExtends":    "collection",
+								"sButtonText": 'Save <span class="caret" />',
+								"aButtons":    [ "csv", "xls", "pdf" ]
+							}
+						]
+					}
 				} );
 			} );
 		</script>
@@ -25,16 +39,16 @@
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				TableTools example
+				TableTools with Twitter Bootstrap
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>This example shows the basic initialisation of TableTools by simply including the 'T' marker in DataTables' sDom parameter. This tell DataTables to insert the TableTools toolbar in that location. Remember to include the Javascript and CSS source files as well!</p>
-			<p>It is worth noting that you might need to <a href="swf_path.html">set the <i>sSwfPath</i> parameter</a> to tell TableTools where to find the SWF file for copy and file save.</p>
+			<p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> is a very powerful design framework for allowing you to very quickly create applications with a unified look and feel. <a href="http://datatables.net/blog/Twitter_Bootstrap_2">DataTables integrates well</a> with Bootstrap, and so does TableTools.</p>
+			<p>This example shows the default Bootstrap theme being used with a Bootstrap styled DataTable. sDom is supplied to the DataTable with a setup suitable for Bootstrap styling, and a TableTools collection is used to show how it can be used in this environment.</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
-<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
 	<thead>
 		<tr>
 			<th>Rendering engine</th>
@@ -462,8 +476,46 @@
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
 	$('#example').dataTable( {
-		"sDom": 'T&lt;"clear"&gt;lfrtip'
+		"sDom": "&lt;'row-fluid'&lt;'span6'T&gt;&lt;'span6'f&gt;r&gt;t&lt;'row-fluid'&lt;'span6'i&gt;&lt;'span6'p&gt;&gt;",
+		"oTableTools": {
+			"aButtons": [
+				"copy",
+				"print",
+				{
+					"sExtends":    "collection",
+					"sButtonText": 'Save &lt;span class="caret" /&gt;',
+					"aButtons":    [ "csv", "xls", "pdf" ]
+				}
+			]
+		}
 	} );
+} );</pre>
+			
+			<p>The following code is included from the <a href="http://datatables.github.com/Plugins/integration/bootstrap/dataTables.bootstrap.js">DataTables bootstrap integration file</a>:</p>
+
+			<pre>// Set the classes that TableTools uses to something suitable for Bootstrap
+$.extend( true, $.fn.DataTable.TableTools.classes, {
+	"container": "btn-group",
+	"buttons": {
+		"normal": "btn",
+		"disabled": "btn disabled"
+	},
+	"collection": {
+		"container": "DTTT_dropdown dropdown-menu",
+		"buttons": {
+			"normal": "",
+			"disabled": "disabled"
+		}
+	}
+} );
+
+// Have the collection use a bootstrap compatible dropdown
+$.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
+	"collection": {
+		"container": "ul",
+		"button": "li",
+		"liner": "a"
+	}
 } );</pre>
 
 
