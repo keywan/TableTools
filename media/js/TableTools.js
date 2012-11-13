@@ -1363,8 +1363,8 @@ TableTools.prototype = {
 	{
 		var that = this;
 		var id = node.getAttribute('id');
-		
-		if ( document.getElementById(id) )
+		var obj = document.getElementById(id);
+		if ( obj && (obj.width || obj.offsetWidth) )
 		{
 			flash.glue( node, text );
 		}
