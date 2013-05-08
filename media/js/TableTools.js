@@ -1,13 +1,13 @@
 /*
  * File:        TableTools.js
- * Version:     2.1.4
+ * Version:     2.1.6-dev
  * Description: Tools and buttons for DataTables
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Language:    Javascript
  * License:	    GPL v2 or BSD 3 point style
  * Project:	    DataTables
  * 
- * Copyright 2009-2012 Allan Jardine, all rights reserved.
+ * Copyright 2009-2013 Allan Jardine, all rights reserved.
  *
  * This source file is free software, under either the GPL v2 license or a
  * BSD style license, available at:
@@ -673,11 +673,12 @@ TableTools.prototype = {
 		/* Buttons */
 		this._fnButtonDefinations( this.s.buttonSet, this.dom.container );
 		
-		/* Destructor - need to wipe the DOM for IE's garbage collector */
+		/* Destructor */
 		this.s.dt.aoDestroyCallback.push( {
 			"sName": "TableTools",
 			"fn": function () {
-				that.dom.container.innerHTML = "";
+				$(that.s.dt.nTBody).off( 'click.DTTT_Select', 'tr' );
+				$(that.dom.container).empty();
 			}
 		} );
 	},
@@ -812,7 +813,7 @@ TableTools.prototype = {
 	 *  @method  _fnButtonBase
 	 *  @param   {o} oConfig Button configuration object
 	 *  @returns {Node} DIV element for the button
-	 *  @private 
+	 *  @private
 	 */
 	"_fnButtonBase": function ( o, bCollectionButton )
 	{
@@ -820,14 +821,14 @@ TableTools.prototype = {
 
 		if ( bCollectionButton )
 		{
-			sTag = o.sTag !== "default" ? o.sTag : this.s.tags.collection.button;
-			sLiner = o.sLinerTag !== "default" ? o.sLiner : this.s.tags.collection.liner;
+			sTag = o.sTag && o.sTag !== "default" ? o.sTag : this.s.tags.collection.button;
+			sLiner = o.sLinerTag && o.sLinerTag !== "default" ? o.sLiner : this.s.tags.collection.liner;
 			sClass = this.classes.collection.buttons.normal;
 		}
 		else
 		{
-			sTag = o.sTag !== "default" ? o.sTag : this.s.tags.button;
-			sLiner = o.sLinerTag !== "default" ? o.sLiner : this.s.tags.liner;
+			sTag = o.sTag && o.sTag !== "default" ? o.sTag : this.s.tags.button;
+			sLiner = o.sLinerTag && o.sLinerTag !== "default" ? o.sLiner : this.s.tags.liner;
 			sClass = this.classes.buttons.normal;
 		}
 
@@ -1024,7 +1025,7 @@ TableTools.prototype = {
 			
 			$(dt.nTable).addClass( this.classes.select.table );
 			
-			$('tr', dt.nTBody).live( 'click', function(e) {
+			$(dt.nTBody).on( 'click.DTTT_Select', 'tr', function(e) {
 				/* Sub-table must be ignored (odd that the selector won't do this with >) */
 				if ( this.parentNode != dt.nTBody )
 				{
@@ -2434,7 +2435,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.VERSION = "2.1.4";
+TableTools.VERSION = "2.1.6-dev";
 TableTools.prototype.VERSION = TableTools.VERSION;
 
 
